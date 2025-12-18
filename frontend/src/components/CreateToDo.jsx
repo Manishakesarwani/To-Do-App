@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from "../api/axios";
 import React, { useState } from 'react'
 import BackToHomePage from './BackToHomePage';
 import { useNavigate } from 'react-router-dom';

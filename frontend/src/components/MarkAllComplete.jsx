@@ -1,5 +1,5 @@
 import React from 'react'
-import axios from 'axios'
+import axios from "../api/axios"
 import { useState } from 'react';
 
 function MarkAllComplete({todo, setToDo}) {

@@ -1,7 +1,7 @@
 import GetToDoById from './GetToDoById';
 import { useParams } from 'react-router-dom';
 import BackToHomePage from './BackToHomePage';
-import axios from 'axios';
+import axios from "../api/axios";
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 

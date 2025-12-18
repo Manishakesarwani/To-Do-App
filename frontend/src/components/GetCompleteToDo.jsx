@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import axios from "../api/axios";
 import BackToHomePage from './BackToHomePage';
 import { useNavigate } from 'react-router-dom';
 import DeleteAllCompleteToDo from './DeleteAllCompleteToDo';
@@ -7,10 +7,12 @@ import DeleteAllCompleteToDo from './DeleteAllCompleteToDo';
 function GetCompleteToDo() {
 
   const [completeToDo, setCompleteToDo] = useState([]);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   const fetchCompleteToDo = async ()=>{
     try{
+      setLoading(true);
       const res= await axios.get("/todo/complete");
       console.log(res.data.CompleteToDos);
       setCompleteToDo(res.data.CompleteToDos);
@@ -22,7 +24,9 @@ function GetCompleteToDo() {
         console.log(message);
         setCompleteToDo([]);
       }
-    }
+    }finally {
+    setLoading(false);
+  }
   }
   useEffect(()=>{
     fetchCompleteToDo();
@@ -55,11 +59,14 @@ function GetCompleteToDo() {
 
   return (
     <div className='flex flex-col justify-center items-center'>
-        {completeToDo.length===0 && (
+        {loading && (
+          <p className="text-blue-500 my-4 text-center animate-pulse">Loading tasks...</p>
+        )}
+        {!loading && completeToDo.length===0 && (
           <p className="text-gray-500 my-4 text-center">No complete tasks found.</p>
         )}
         <div className='grid grid-cols-4 gap-4'>
-        {completeToDo.length>0 && completeToDo.map(each => (
+        {!loading && completeToDo.length>0 && completeToDo.map(each => (
             <div key={each._id} className={`flex justify-between items-center border border-black/10 rounded-lg px-3 py-1.5 gap-x-3 shadow-sm shadow-white/50 duration-300 my-3 text-black ${
         each.isCompleted ? "bg-[#c6e9a7]" : "bg-[#ccbed7]"
     }`}>
@@ -80,7 +87,7 @@ function GetCompleteToDo() {
     </div>
     <div className='flex gap-3'>
       <BackToHomePage />
-      {completeToDo.length>0 && (
+      {!loading && completeToDo.length>0 && (
         <DeleteAllCompleteToDo completeToDo={completeToDo} setCompleteToDo={setCompleteToDo} />
       )}
     </div>

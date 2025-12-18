@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import axios from "../api/axios";
 import BackToHomePage from './BackToHomePage';
 import { useNavigate } from 'react-router-dom';
 import MarkAllComplete from './MarkAllComplete';
@@ -9,9 +9,11 @@ import MarkAllIncomplete from './MarkAllIncomplete';
 function GetAllTodo() {
 
  const [todo, setTodo] = useState([]);
+ const [loading, setLoading] = useState(true);
  const navigate = useNavigate();
 
   const fetchTodos = async () =>{
+    setLoading(true);
     try{
       const res = await axios.get("/todo");
       console.log("Data",res.data.toDoList);
@@ -27,7 +29,9 @@ function GetAllTodo() {
           console.log(message);
           setTodo([]);
         }
-    };
+    }finally {
+    setLoading(false);
+  };
   }
 
     useEffect(()=>{
@@ -70,11 +74,14 @@ function GetAllTodo() {
 
   return (
     <div className='flex flex-col justify-center items-center'>
-        {todo.length===0 && (
-          <p className="text-gray-500 my-4 text-center">🎉No tasks found.</p>
+        {loading && (
+          <p className="text-blue-500 my-4 text-center animate-pulse">Loading tasks...</p>
+        )}
+        {!loading && todo.length===0 && (
+          <p className="text-gray-500 my-4 text-center">No tasks found.</p>
         )}
         <div className='grid grid-cols-4 gap-4'>
-        {todo.length>0 && todo.map(each => (
+        {!loading && todo.length>0 && todo.map(each => (
             <div key={each._id} className={`flex justify-between items-center border border-black/10 rounded-lg px-3 py-1.5 gap-x-3 shadow-sm shadow-white/50 duration-300 my-3 text-black ${
         each.isCompleted ? "bg-[#c6e9a7]" : "bg-[#ccbed7]"
     }`}>
@@ -95,10 +102,10 @@ function GetAllTodo() {
     </div>
     <div className='flex'>
       <BackToHomePage />
-      {todo.length>0 && (
+      {!loading && todo.length>0 && (
         <MarkAllComplete todo={todo} setToDo={setTodo} />
       )}
-      {todo.length>0 && (
+      {!loading && todo.length>0 && (
         <MarkAllIncomplete todo={todo} setToDo={setTodo} />
       )}
     </div>

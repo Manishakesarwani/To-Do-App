@@ -1,15 +1,17 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import axios from "../api/axios";
 import BackToHomePage from './BackToHomePage';
 import { useNavigate } from 'react-router-dom';
 
 function GetIncompleteToDo() {
 
     const [incompleteToDo, setIncompleteToDo] = useState([]);
+    const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
 
     const fetchIncompleteToDo = async () => {
       try{
+        setLoading(true);
         const res = await axios.get("/todo/incomplete")
         console.log("Incomplete Data", res.data.IncompleteToDos);
         setIncompleteToDo(res.data.IncompleteToDos);
@@ -24,7 +26,9 @@ function GetIncompleteToDo() {
           console.log(message);
           setIncompleteToDo([]);
         }
-      }
+      }finally {
+    setLoading(false);
+  }
     }
     useEffect(()=>{
       fetchIncompleteToDo();
@@ -57,11 +61,14 @@ function GetIncompleteToDo() {
 
   return (
     <div className='flex flex-col justify-center items-center'>
-        {incompleteToDo.length===0 && (
+        {loading && (
+          <p className="text-blue-500 my-4 text-center animate-pulse">Loading tasks...</p>
+        )}
+        {!loading && incompleteToDo.length===0 && (
           <p className="text-gray-500 my-4 text-center">🎉No incomplete tasks found.</p>
         )}
         <div className='grid grid-cols-4 gap-4'>
-        {incompleteToDo.length>0 && incompleteToDo.map(each => (
+        {!loading && incompleteToDo.length>0 && incompleteToDo.map(each => (
             <div key={each._id} className={`flex justify-between items-center border border-black/10 rounded-lg px-3 py-1.5 gap-x-3 shadow-sm shadow-white/50 duration-300 my-3 text-black ${
         each.isCompleted ? "bg-[#c6e9a7]" : "bg-[#ccbed7]"
     }`}>
