@@ -1,5 +1,6 @@
 const express=require("express");
 const toDo=require("./route/to-do");
+const cors=require("cors");
 
 //MongoDb connection
 const dotenv=require("dotenv");
@@ -13,6 +14,7 @@ Db_Connection();
 const app=express();
 const port=3000;
 
+app.use(cors());
 app.use(express.json());
 
 app.get("/",(req,res)=>{
