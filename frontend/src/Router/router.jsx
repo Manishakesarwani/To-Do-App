@@ -1,6 +1,6 @@
 import App from "../App";
 import CreateToDo from "../components/CreateToDo";
-import GetAllToDo from "../components/GetAllTodo";
+import GetAllToDo from "../components/GetAllToDo";
 import Home from "../pages/Home";
 import { createBrowserRouter } from "react-router-dom";
 import UpdateToDo from "../components/UpdateToDo";
