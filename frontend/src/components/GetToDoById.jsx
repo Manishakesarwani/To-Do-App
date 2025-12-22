@@ -24,7 +24,7 @@ function GetToDoById() {
     },[]);
 
   return (
-    <div className={`max-w-2xl mx-auto border border-black/10 rounded-lg px-3 py-1.5 gap-x-3 shadow-sm shadow-white/50 duration-300 my-3 text-black ${
+    <div className={`max-w-2xl px-3 py-1.5 mx-auto border border-black/10 rounded-lg gap-x-3 duration-300 my-3 text-black ${
         uToDo.isCompleted ? "bg-[#c6e9a7]" : "bg-[#ccbed7]"
     }`}>
         <div className='flex flex-col'>

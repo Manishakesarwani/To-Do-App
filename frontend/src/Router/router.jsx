@@ -5,8 +5,8 @@ import Home from "../pages/Home";
 import { createBrowserRouter } from "react-router-dom";
 import UpdateToDo from "../components/UpdateToDo";
 import DeleteToDo from "../components/DeleteToDo";
-import GetCompleteToDo from "../components/GetCompleteToDo";
 import GetIncompleteToDo from "../components/GetIncompleteToDo";
+import GetAllCompleteToDo from "../components/GetAllCompleteToDo";
 
 const router = createBrowserRouter([
   {
@@ -19,7 +19,7 @@ const router = createBrowserRouter([
       {path:"update/:id", element:<UpdateToDo />},
       {path:"delete/:id", element:<DeleteToDo />},
       {path:"incompleteToDo", element:<GetIncompleteToDo />},
-      {path:"completeToDo", element:<GetCompleteToDo />}
+      {path:"completeToDo", element:<GetAllCompleteToDo />}
     ]
   }
 ])

@@ -51,14 +51,6 @@ function GetAllTodo() {
 
     alert(res.data.message);
     setTodo(res.data.UpdatedToDo);
-
-    // setTodo(prev =>
-    //   prev.map(item =>
-    //     item._id === id
-    //       ? { ...item, isCompleted: !item.isCompleted }
-    //       : item
-    //   )
-    // );
     fetchTodos();
   } catch (error) {
     const success=error.response?.data?.success;
@@ -82,7 +74,7 @@ function GetAllTodo() {
         )}
         <div className='grid grid-cols-4 gap-4'>
         {!loading && todo.length>0 && todo.map(each => (
-            <div key={each._id} className={`flex justify-between items-center border border-black/10 rounded-lg px-3 py-1.5 gap-x-3 shadow-sm shadow-white/50 duration-300 my-3 text-black ${
+            <div key={each._id} className={`border-black/10 flex border justify-between py-1.5 items-center rounded-lg px-3 gap-x-3 duration-300 my-3 text-black ${
         each.isCompleted ? "bg-[#c6e9a7]" : "bg-[#ccbed7]"
     }`}>
                 <div>

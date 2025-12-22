@@ -4,13 +4,12 @@ import BackToHomePage from './BackToHomePage';
 import { useNavigate } from 'react-router-dom';
 import DeleteAllCompleteToDo from './DeleteAllCompleteToDo';
 
-function GetCompleteToDo() {
+function GetAllCompleteToDo() {
+    
+    const [completeToDo, setCompleteToDo] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-  const [completeToDo, setCompleteToDo] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
-
-  const fetchCompleteToDo = async ()=>{
+    const fetchCompleteToDo = async ()=>{
     try{
       setLoading(true);
       const res= await axios.get("/todo/complete");
@@ -38,24 +37,19 @@ function GetCompleteToDo() {
     const deleteToDo = (id) =>{
       navigate(`/delete/${id}`);
     }
-  
+
     const toggle = async (id) => {
     try {
-      await axios.patch(`/todo/update/status/${id}`);
+      const res=await axios.patch(`/todo/update/status/${id}`);
   
-      setCompleteToDo(prev =>
-        prev.map(item =>
-          item._id === id
-            ? { ...item, isCompleted: !item.isCompleted }
-            : item
-        )
-      );
+      setCompleteToDo(res.data.CompleteToDos);
       
       fetchCompleteToDo();
     } catch (error) {
       console.error(error);
     }
   };
+
 
   return (
     <div className='flex flex-col justify-center items-center'>
@@ -67,7 +61,7 @@ function GetCompleteToDo() {
         )}
         <div className='grid grid-cols-4 gap-4'>
         {!loading && completeToDo.length>0 && completeToDo.map(each => (
-            <div key={each._id} className={`flex justify-between items-center border border-black/10 rounded-lg px-3 py-1.5 gap-x-3 shadow-sm shadow-white/50 duration-300 my-3 text-black ${
+            <div key={each._id} className={`border-black/10 flex border justify-between py-1.5 items-center rounded-lg px-3 gap-x-3 duration-300 my-3 text-black ${
         each.isCompleted ? "bg-[#c6e9a7]" : "bg-[#ccbed7]"
     }`}>
                 <div>
@@ -92,7 +86,8 @@ function GetCompleteToDo() {
       )}
     </div>
     </div>
+
   )
 }
 
-export default GetCompleteToDo
+export default GetAllCompleteToDo
